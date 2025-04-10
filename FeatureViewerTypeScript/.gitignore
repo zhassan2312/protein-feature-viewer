@@ -1,0 +1,11 @@
+# Exclude WebStorm project files
+.idea
+# Exclude node modules
+node_modules
+# Exclude built project
+dist
+# Ignore types
+**/*.d.ts
+# Ignore .js files
+**/*.js.map
+src/*.js

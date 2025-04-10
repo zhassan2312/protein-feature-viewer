@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "allowJs": true,
+    // Module defines the output module resolution system
+    "module": "es6",
+    // Target defines the compiled code targets
+    "target": "es6",
+    // Skip type checking all .d.ts files.
+    "skipLibCheck": true
+  },
+  // Define files to be included
+  "files": ["./index.ts", "./example.ts"],
+  // Include sources
+  "include": ["src"],
+  // Exclude node modules
+  "exclude": ["node_modules"]
+}

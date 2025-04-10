@@ -1,0 +1,35 @@
+{
+  "name": "describeprot-fv",
+  "version": "1.0.0",
+  "description": "DescribePROT Feature Viewer",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd FeatureViewerTypeScript && npm install",
+    "build": "webpack --mode=production --node-env=production --config ./webpack.config.js && python3 varchangescript.py ./testdata/A0A022PMU0_view_all.txt",
+    "build:dev": "webpack --mode=development --config ./webpack.config.js",
+    "build:prod-export": "webpack --mode=production --node-env=production --config ./webpack.config.js",
+    "watch": "webpack --watch",
+    "serve": "webpack serve"
+  },
+  "keywords": [],
+  "author": "Benjamin Baldwin",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "@webpack-cli/generators": "^3.0.7",
+    "css-loader": "^7.1.2",
+    "html-inline-css-webpack-plugin": "^1.11.2",
+    "html-inline-script-webpack-plugin": "^3.2.1",
+    "html-webpack-plugin": "^5.6.3",
+    "mini-css-extract-plugin": "^2.9.2",
+    "prettier": "^3.5.0",
+    "sass": "^1.84.0",
+    "sass-loader": "^16.0.4",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.3",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
+  }
+}

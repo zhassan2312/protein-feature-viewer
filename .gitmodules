@@ -1,0 +1,3 @@
+[submodule "FeatureViewerTypeScript"]
+	path = FeatureViewerTypeScript
+	url = https://github.com/BaldwinBR/FeatureViewerTypeScript.git
