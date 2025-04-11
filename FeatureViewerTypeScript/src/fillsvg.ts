@@ -310,9 +310,11 @@ class FillSVG extends ComputingFunctions {
 
             this.preComputing.preComputingLine(feature);
 
+            this.addYAxisForLine(this.commons.YPosition);
+
             this.fillSVGLine(feature, this.commons.YPosition);
             feature.data = this.storeData;
-            this.commons.YPosition += this.commons.step // feature.pathLevel; // 7
+            this.commons.YPosition += this.commons.step+50 // feature.pathLevel; // 7
             // this.commons.YPosition += negativeNumbers ? feature.pathLevel - 5 : 0;
 
         }
@@ -974,7 +976,7 @@ class FillSVG extends ComputingFunctions {
             // necessary id to get height when placing tags
             .attr("id", () => {return 'c' + object.id + '_container'})
             .attr("class", "lining featureLine")
-            .attr("transform", "translate(0," + position + ")")
+            .attr("transform", "translate(20," + (position+25) + ")")
             .attr("heigth", object.curveHeight);
 
         // Line graphs are made up of segments, 
@@ -1230,6 +1232,30 @@ class FillSVG extends ComputingFunctions {
                 .attr("display", "none")
         }
     };
+
+    private addYAxisForLine(yPosition: number) {
+        const yScale = d3.scaleLinear()
+            .domain([0, 1])
+            .range([75, 15]); 
+
+        const yAxis = d3.axisLeft(yScale)
+            .tickValues([0, 0.5, 1])
+            .tickSize(4);
+    
+            const yAxisGroup = this.commons.svgContainer.append("g")
+            .attr("class", "y-axis-line")
+            .attr("transform", `translate(20, ${yPosition})`)
+            .call(yAxis);
+    
+        yAxisGroup.selectAll("text")
+            .style("font-size", "8px")
+            .style("fill", "#000");
+    
+        yAxisGroup.selectAll("path, line")
+            .style("stroke", "000")
+            .style("stroke-height","1")
+            .style("stroke-width", "1");
+    }
 
     public updateXAxis(position) {
         this.commons.svgContainer.selectAll(".XAxis")
