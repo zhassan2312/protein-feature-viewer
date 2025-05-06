@@ -177,8 +177,9 @@ class FeatureViewer {
             .attr("width", this.commons.viewerOptions.margin.left)
             .attr("class", "flagBackground")
             .attr("height", "100%")
+            .attr("fill-opacity", 0)
             .attr("fill", this.commons.backgroundcolor)
-            .attr("fill-opacity", 1);
+            .attr("z-index", 1);
         this.updateYAxis();
 
     };
@@ -226,6 +227,7 @@ class FeatureViewer {
         // create polygon
         this.commons.yAxisSVGGroup
             .append("polygon") // attach a polygon
+            
             .attr("class", (d) => {
                     if (this.commons.viewerOptions.showSubFeatures && d.hasSubFeatures) {
                         return "boxshadow Arrow withsubfeatures"

@@ -976,7 +976,7 @@ class FillSVG extends ComputingFunctions {
             // necessary id to get height when placing tags
             .attr("id", () => {return 'c' + object.id + '_container'})
             .attr("class", "lining featureLine")
-            .attr("transform", "translate(20," + (position+25) + ")")
+            .attr("transform", "translate(0," + (position+25) + ")")
             .attr("heigth", object.curveHeight);
 
         // Line graphs are made up of segments, 
@@ -1244,7 +1244,7 @@ class FillSVG extends ComputingFunctions {
     
             const yAxisGroup = this.commons.svgContainer.append("g")
             .attr("class", "y-axis-line")
-            .attr("transform", `translate(20, ${yPosition})`)
+            .attr("transform", `translate(-5, ${yPosition})`)
             .call(yAxis);
     
         yAxisGroup.selectAll("text")

@@ -1116,6 +1116,7 @@ window.onload = () => {
                 label: ' ',
                 color: '#ff9408',
                 data: linkerScoreData
+                
             }
         ]);
 
