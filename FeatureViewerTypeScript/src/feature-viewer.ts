@@ -177,9 +177,8 @@ class FeatureViewer {
             .attr("width", this.commons.viewerOptions.margin.left)
             .attr("class", "flagBackground")
             .attr("height", "100%")
-            .attr("fill-opacity", 0)
             .attr("fill", this.commons.backgroundcolor)
-            .attr("z-index", 1);
+            .attr("fill-opacity", 0);
         this.updateYAxis();
 
     };
@@ -227,7 +226,6 @@ class FeatureViewer {
         // create polygon
         this.commons.yAxisSVGGroup
             .append("polygon") // attach a polygon
-            
             .attr("class", (d) => {
                     if (this.commons.viewerOptions.showSubFeatures && d.hasSubFeatures) {
                         return "boxshadow Arrow withsubfeatures"
@@ -235,9 +233,6 @@ class FeatureViewer {
                         return "boxshadow Arrow"
                     }
             })
-            .style("stroke", (d) => {
-                    return d.flagColor ? d.flagColor : this.commons.viewerOptions.flagColor;
-            }) // colour the border if selected
             .attr("points", (d) => {
                 if (d.ladderLabel == null) {
                     // match points with subFeature level
@@ -251,7 +246,8 @@ class FeatureViewer {
             })
             .style("fill", (d) => {
                     return d.flagColor ? d.flagColor : this.commons.viewerOptions.flagColor;
-            });
+            })
+            .style("fill-opacity", 0);
 
         // foreingObject for chevron
 
@@ -306,7 +302,7 @@ class FeatureViewer {
                     cvm = 17
                 }
                 // horizontal flag placement
-                this.commons.headMargin = 20;
+                this.commons.headMargin = 0;
                 if (d.ladderLabel == null) {
                     if (d.flagLevel) {
                         this.commons.headMargin = 20 * (d.flagLevel - 1);
@@ -328,13 +324,15 @@ class FeatureViewer {
                 if (this.commons.viewerOptions.mobileMode) {
                     return this.calcFlagWidth(d);
                 } else {
-                    let margin = 20 + this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth  // 20 + (20 * d.flagLevel) --> 0
+                    //let margin = 20 + this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth  // 20 + (20 * d.flagLevel) --> 0
+                    let margin = 8;
                     return this.commons.viewerOptions.margin.left - margin; // chevron margin and text indent
                 }
             })
             .attr("height", this.commons.step)
             .html((d) => {
-                return d.label;
+                //return d.label;
+                return `<div xmlns="http://www.w3.org/1999/xhtml" style="text-align: right; width: 100%; height: 100%; overflow: hidden;">${d.label}</div>`;
             });
 
 
@@ -475,6 +473,7 @@ class FeatureViewer {
                     // apply transitions
                     this.transition_data(this.commons.features, currentShift);
                     this.fillSVG.reset_axis();
+                    this.fillSVG.reset_axisTop();
 
                     // remove sequence
 
@@ -542,7 +541,8 @@ class FeatureViewer {
                     // text width depends on mobile width, flaglevel and presence of subfeatures icon
                     return this.calcFlagWidth(d);
                 } else {
-                    let margin = 20 + this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth   // 20 + (20 * d['flagLevel']) --> 0
+                    //let margin = 20 + this.commons.viewerOptions.ladderSpacing * this.commons.viewerOptions.maxDepth   // 20 + (20 * d['flagLevel']) --> 0
+                    let margin = 8
                     return this.commons.viewerOptions.margin.left - margin; // chevron margin and text indent
                 }
             });
@@ -564,12 +564,12 @@ class FeatureViewer {
     }
 
     private calcFlagWidth(d) {
-        this.commons.headMargin = 20;  // 20 * (d.flagLevel - 1)
+        this.commons.headMargin = 0;  // 20 * (d.flagLevel - 1)
         let totalspace = 0
         if ('hasSubFeatures' in d && d.hasSubFeatures) {totalspace} // {totalspace += 20}
 
         if (this.commons.headMargin) {totalspace += this.commons.headMargin + 8}
-        let space = this.commons.viewerOptions.labelTrackWidthMobile - 15 - totalspace
+        let space = this.commons.viewerOptions.labelTrackWidthMobile - 8 - totalspace
         if (space < 20) {
             return '0px';
         } else {
@@ -652,6 +652,7 @@ class FeatureViewer {
 
             this.transition_data(this.commons.features, this.commons.current_extend.start);
             this.fillSVG.reset_axis();
+            this.fillSVG.reset_axisTop();
             this.fillSVG.resizeBrush()
 
         }
@@ -675,6 +676,9 @@ class FeatureViewer {
                 this.transition.lollipop(o);
             } else if (o.type === "curve") {
                 this.transition.lineTransition(o);
+            }
+            else if (o.type === 'ptmTriangle') {
+                this.transition.ptmTriangle(o);
             }
             // resize basal line too
             this.transition.basalLine(o);
@@ -751,16 +755,17 @@ class FeatureViewer {
                 return d['y'] + 6;
                 //return (d[0] as any).y + 6;
             });
-
+        /*
         let rtickStep = Math.round(this.commons.fvLength/10); // fraction of a tenth
         //let tickStep = Math.round(rtickStep/10)*10; // nearest 10th multiple
         let tickStep = Math.round(rtickStep/20)*10; // nearest 10th multiple
-
+        
         // TODO: add 0 and last value to array --Ben
         let tickArray = Array.from(Array(this.commons.fvLength).keys())
             .filter(function (value, index, ar) {
                 return (index % tickStep == 0 && index !== 0);
             });
+        
         /*
         let tickArray = Array.from(Array(this.commons.fvLength).keys())
         .filter((value, index) => index % tickStep == 0)
@@ -784,7 +789,13 @@ class FeatureViewer {
             // Ensures removal of non int values like 0.5
             .tickFormat(d => (Number.isInteger(d) && d !== 0) ? d.toString() : "");
 
-        let yAxisScale = d3.scaleBand()
+        //Create Axis
+        this.commons.xAxisTop = d3.axisTop(this.commons.scaling)
+            .ticks(10)
+            // Ensures removal of non int values like 0.5
+            .tickFormat(d => (Number.isInteger(d) && d !== 0) ? d.toString() : "");
+        
+            let yAxisScale = d3.scaleBand()
             //.domain([0, this.commons.yData.length])
             .rangeRound([0, 500]);
 
@@ -906,7 +917,7 @@ class FeatureViewer {
                     .text("1");
             }
 
-            // help
+            // help buttons (top of page)
             if (!document.querySelector(div + ' .header-help')) {
 
                 let headerHelp = headerOptions
@@ -926,7 +937,22 @@ class FeatureViewer {
                     .attr("class", "helperButton")
                     .append("path")
                     .attr("d", "M13 8v-6h-6v6h-5l8 8 8-8h-5zM0 18h20v2h-20v-2z")
-
+                
+                headerHelp
+                    .append("button")
+                    .attr("class", "mybuttoncircle")
+                    .attr("id", "refreshButton")
+                    .on("click", () => {
+                        this.resetAll();
+                    })
+                    // draw icon
+                    .append("svg")
+                    .attr("class", "helperButton")
+                    .attr("viewBox", "0 0 512 512")
+                    .append("path")
+                    .attr("d", "M64,256H34A222,222,0,0,1,430,118.15V85h30V190H355V160h67.27A192.21,192.21,0,0,0,256,64C150.13,64,64,150.13,64,256Zm384,0c0,105.87-86.13,192-192,192A192.21,192.21,0,0,1,89.73,352H157V322H52V427H82V393.85A222,222,0,0,0,478,256Z")
+                    .attr("stroke", "dimgray")
+                    .attr("stroke-width", 20)
 
                 headerHelp
                     .append("button")
@@ -940,9 +966,7 @@ class FeatureViewer {
                     .attr("class", "helperButton")
                     .append("path")
                     .attr("d", "M2.93 17.070c-1.884-1.821-3.053-4.37-3.053-7.193 0-5.523 4.477-10 10-10 2.823 0 5.372 1.169 7.19 3.050l0.003 0.003c1.737 1.796 2.807 4.247 2.807 6.947 0 5.523-4.477 10-10 10-2.7 0-5.151-1.070-6.95-2.81l0.003 0.003zM9 11v4h2v-6h-2v2zM9 5v2h2v-2h-2z")
-
-            }
-
+            }              
         }
 
         this.commons.svg = d3.select(div).append("svg")
@@ -1062,6 +1086,7 @@ class FeatureViewer {
         }
 
         this.fillSVG.addXAxis(this.commons.YPosition);
+        this.fillSVG.addXAxisTop(this.commons.YPosition);
         this.addYAxis();
 
         if (this.commons.viewerOptions.brushActive) {
@@ -1117,6 +1142,10 @@ class FeatureViewer {
         if (!object.color) {
             object.color = "#DFD5F5";
         }
+        
+        if (object.toggle === undefined){
+            this.calculate.initToggle(object)
+        }
 
         //object.height = this.commons.elementHeight;
         object.flagLevel = flagLevel;
@@ -1140,6 +1169,7 @@ class FeatureViewer {
         }
 
         this.fillSVG.updateXAxis(this.commons.YPosition);
+        this.fillSVG.updateXAxisTop(this.commons.YPosition);
         this.calculate.updateSVGHeight(this.commons.YPosition + 5);
 
         // update brush
@@ -1289,6 +1319,7 @@ class FeatureViewer {
 
         this.transition_data(this.commons.features, this.commons.viewerOptions.offset.start);
         this.fillSVG.reset_axis();
+        this.fillSVG.reset_axisTop();
 
         // Fire Event
         if (CustomEvent) {
@@ -1313,16 +1344,55 @@ class FeatureViewer {
         this.resetHighlight()
         this.resetZoom()
 
+        // empty features and replace data
         this.emptyFeatures()
-        // empty features
         this.commons.features = this.commons.viewerOptions.backup.features;
+
+        // Change all toggles to true
+        this.resetAllToggles()
+
         // redraw features
         this.drawFeatures()
     }
 
+    // Public wrapper of calcuate method
+    public resetAllToggles(){
+
+        this.calculate.updateToggles()
+    }
+    
     // Toggle Features Graphs On/Off
-    public featureToggle(){
-        //this.transition.lineTransition(); 
+    public featureToggle(buttonId: string){
+
+        // Seperate ButtonID into id string and index number
+        const parts = buttonId.trim().split(/\s+/);
+        const [ID, rawIndex] = parts;
+        const index = Number(rawIndex);
+
+        // Iterate over features looking for ID match
+        for (let i = 0; i < this.commons.features.length; i ++){
+            if (this.commons.features[i].id == ID){
+
+                // Curve data contains toggle information wihin an array
+                if (Array.isArray(this.commons.features[i].toggle)){
+                    //Flip Value
+                    this.commons.features[i].toggle[index] = !this.commons.features[i].toggle[index];
+                }
+                // Not a curve type so just boolean value; Currently not used
+                else {
+                    this.commons.features[i].toggle = !this.commons.features[i].toggle;
+                }
+
+                // Refresh Viewer
+                this.commons.features = this.emptyFeatures()
+                this.drawFeatures()
+                // Restore scroll
+                if (this.commons.sidebarElements) {
+                    this.commons.sidebarElements.node().scrollTop = this.commons.scrollTop;
+                }
+
+            }
+        }
     }
 
     public downloadSvg() {
@@ -1425,11 +1495,20 @@ class FeatureViewer {
 
     public emptyFeatures() {
 
+        // Store sidebar scroll position
+        this.commons.scrollTop = 0;
+        if (this.commons.sidebarElements) {
+             this.commons.scrollTop = this.commons.sidebarElements.node().scrollTop;
+        }
+
         // clean feature object
         let deepCopy = JSON.parse(JSON.stringify(this.commons.features))
         for (const ft of this.commons.features) {
             this.recursivelyRemove(ft)
         }
+
+        //Remove storage of sidebar elements
+        this.commons.sidebarElements = null;
 
         function checkSequence(ft) {
             return ft.id === 'fv_sequence';
@@ -1443,6 +1522,7 @@ class FeatureViewer {
 
         // fix axis
         this.fillSVG.updateXAxis(this.commons.step)
+        this.fillSVG.updateXAxisTop(this.commons.step)
 
         // transit svgContent
         let container = d3.select(`#${this.divId} #svgContent`);
@@ -1739,6 +1819,7 @@ class FeatureViewer {
 
         // draw the viewer
         this.drawFeatures()
+    
 
     }
 
