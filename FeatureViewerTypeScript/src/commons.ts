@@ -74,6 +74,8 @@ class Commons {
     public svg: any;
     public svgContainer: any;
     public tagsContainer: any;
+    public sidebarElements: any;
+    public scrollTop: any;
     public tooltipDiv: any;
     public customTooltipDiv: any;
     public divId: string;
@@ -82,7 +84,7 @@ class Commons {
     public yAxisSVG: any;
     public yAxisSVGGroup: any;
     public xAxis: any;
-    public yAxis: any
+    public xAxisTop: any;
     public line: any;
     public lineBond: any;
     public brush: any;

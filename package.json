@@ -2,11 +2,11 @@
   "name": "describeprot-fv",
   "version": "1.0.0",
   "description": "DescribePROT Feature Viewer",
-  "main": "./dist/index.js",
+  "main": "./dist/index_Canvas.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "cd FeatureViewerTypeScript && npm install",
-    "build": "webpack --mode=production --node-env=production --config ./webpack.config.js && python3 varchangescript.py ./testdata/A0A022PMU0_view_all.txt",
+    "build": "webpack --mode=production --node-env=production --config ./webpack.config.js && python3 varchangescript.py ./utils/testdata/P04637_view_all.txt",
     "build:dev": "webpack --mode=development --config ./webpack.config.js",
     "build:prod-export": "webpack --mode=production --node-env=production --config ./webpack.config.js",
     "watch": "webpack --watch",

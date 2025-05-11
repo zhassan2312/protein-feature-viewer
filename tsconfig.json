@@ -13,7 +13,10 @@
     "skipLibCheck": true
   },
   // Define files to be included
-  "files": ["./feature-constructor.ts"],
+   "include": [
+    "./feature-constructor.ts",
+    "./panels/**/*.ts"
+  ],
   // Exclude node modules
   "exclude": ["node_modules"]
 }

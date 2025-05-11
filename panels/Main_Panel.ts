@@ -1,6 +1,6 @@
-import { FeatureViewer } from "./FeatureViewerTypeScript/src/feature-viewer";
-import { extractSegments, extractLines, Segment, extractScoreSegments, psipredRescaleScores, mmseqRescaleScores, lineColorSegments} from "./utils/utils";
-import './feature-constructor.scss';
+import { FeatureViewer } from "../FeatureViewerTypeScript/src/feature-viewer";
+import { extractSegments, extractLines, Segment, extractScoreSegments, psipredRescaleScores, mmseqRescaleScores, lineColorSegments} from "../utils/utils";
+import '../feature-constructor.scss';
 
 declare var inputValues: string;
 

@@ -1,43 +1,60 @@
-// Generated using webpack-cli https://github.com/webpack/webpack-cli
-// Dependencies
 const path = require("path");
-// Plugins
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
-const HtmlInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// Define whether current environment is production or not
+const HtmlInlineScriptPlugin = require("html-inline-script-webpack-plugin");
+const HtmlInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default;
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 const isProduction = process.env.NODE_ENV === "production";
-// Main configuration options
+
+// Define multiple entry points
+const entries = {
+  //For Webpack Serve 
+  index: { import: "./feature-constructor.ts" }, 
+
+  // Panel Entries
+  Main_Panel_Canvas: { import: "./panels/Main_Panel.ts" },
+  Disorder_Panel_Canvas: { import: "./panels/Disorder_Panel.ts" }, 
+  ASA_Panel_Canvas: { import: "./panels/ASA_Panel.ts" }, 
+  SS_Panel_Canvas: { import: "./panels/SS_Panel.ts" }, 
+  Protein_Panel_Canvas: { import: "./panels/Protein_Panel.ts" }, 
+  DNA_Panel_Canvas: { import: "./panels/DNA_Panel.ts" }, 
+  RNA_Panel_Canvas: { import: "./panels/RNA_Panel.ts" }, 
+  SignalP_Panel_Canvas: { import: "./panels/SignalP_Panel.ts" }, 
+  Conservation_Panel_Canvas: { import: "./panels/Conservation_Panel.ts" }, 
+  Linker_Panel_Canvas: { import: "./panels/Linker_Panel.ts" }, 
+  PTM_Panel_allrow_Canvas: { import: "./panels/PTM_Panel_allrow.ts" }, 
+};
+
 const config = {
-  // Entry point for the app
-  entry: {
-    'constructor': { import: './feature-constructor.ts'},
-  },
-  // Define output file and directory
+  entry: entries,
   output: {
-    // Define output file name
     filename: "[name].js",
-    // Define output directory
     path: path.resolve(__dirname, "dist"),
-    // Define a library (Universal Module Definition)
     library: "feature-viewer-typescript",
     libraryTarget: "umd",
     umdNamedDefine: true,
-    // Clean the output directory before emit.
     clean: true,
   },
-  // Live development server
   devServer: {
     open: true,
     host: "localhost",
   },
   plugins: [
     new MiniCssExtractPlugin(),
+    ...Object.keys(entries).map((name) =>
+      new HtmlWebpackPlugin({
+        filename: `${name}.html`,
+        chunks: [name],
+        template: isProduction ? "utils/templates/prod_template.html" : "utils/templates/dev_template_alt.html",
+        inject: "body",
+        scriptLoading: "blocking",
+      })
+    ),
+    ...(isProduction
+      ? [new HtmlInlineScriptPlugin(), new HtmlInlineCSSWebpackPlugin()]
+      : []),
   ],
- externals:[
-    {inputValues: "inputValues"}
-  ],
+  externals: [{ inputValues: "inputValues" }],
   module: {
     rules: [
       {
@@ -48,14 +65,11 @@ const config = {
       {
         test: /\.s[ac]ss$/i,
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
-        // use: ["css-loader", "sass-loader"],
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: "asset",
       },
-      // Add your rules for custom modules here
-      // Learn more about loaders from https://webpack.js.org/loaders/
     ],
   },
   resolve: {
@@ -63,30 +77,8 @@ const config = {
   },
 };
 
-if(isProduction){
-  // template  for production
-  config["plugins"].push(
-    new HtmlWebpackPlugin({
-      template: "prod_template.html",
-    }),
-    new HtmlInlineScriptPlugin(),
-    new HtmlInlineCSSWebpackPlugin()
-  )
-} else {
-  // Template for live dev server
-  config["plugins"].push(
-    new HtmlWebpackPlugin({
-      template: "dev_template_alt.html",
-    })
-  )
-}
-
-// Export actual module
 module.exports = () => {
-  if (isProduction) {
-    config.mode = "production";
-  } else {
-    config.mode = "development";
-  }
+  config.mode = isProduction ? "production" : "development";
   return config;
 };
+

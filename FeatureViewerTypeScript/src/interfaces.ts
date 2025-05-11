@@ -75,7 +75,7 @@ export interface FeaturesList extends Array<FeatureObject>{}
 
 export interface FeatureObject {
   id: string,
-  type: string // "rect" | "path" | "curve" | "unique" | "circle" | "sequence" | "lollipop",
+  type: string // "rect" | "path" | "curve" | "unique" | "circle" | "sequence" | "lollipop" | "ptmTriangle",
   data: Array<FeatureData> | Array<Array<FeatureData>> | string,
   parentId?: any,
   label?: string,
@@ -92,6 +92,7 @@ export interface FeatureObject {
   subfeatures?: Array<FeatureObject>,
   customTooltip?: (data: any) => string,
   flag?: number;
+  toggle?: boolean | Array<boolean>;
 }
 
 export interface FeatureData {
