@@ -309,7 +309,7 @@ class FillSVG extends ComputingFunctions {
 
             this.preComputing.preComputingLine(feature);
             this.addYAxisForLine(this.commons.YPosition);
-
+            
             this.fillSVGLine(feature, this.commons.YPosition);
             feature.data = this.storeData;
             this.commons.YPosition += this.commons.step+50 // feature.pathLevel; // 7
@@ -1358,20 +1358,24 @@ class FillSVG extends ComputingFunctions {
         const yAxis = d3.axisLeft(yScale)
             .tickValues([0, 0.5, 1])
             .tickSize(4);
-    
-            const yAxisGroup = this.commons.svgContainer.append("g")
+
+        const yAxisGroup = this.commons.svg.append("g")
             .attr("class", "y-axis-line")
-            .attr("transform", `translate(-5, ${yPosition})`)
-            .call(yAxis);
-    
+            .attr("transform", `translate(150, ${yPosition+11})`)
+            .call(yAxis)
+            .raise();
+
         yAxisGroup.selectAll("text")
             .style("font-size", "8px")
             .style("fill", "#000");
-    
+
         yAxisGroup.selectAll("path, line")
-            .style("stroke", "000")
-            .style("stroke-height","1")
-            .style("stroke-width", "1");
+            .style("stroke", "#000")
+            .style("stroke-width", "1");
+
+        
+
+
     }
 
     public addXAxis(position) {

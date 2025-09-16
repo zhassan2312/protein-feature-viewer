@@ -9,6 +9,7 @@
     "build": "webpack --mode=production --node-env=production --config ./webpack.config.js && python3 varchangescript.py ./utils/testdata/P04637_view_all.txt",
     "build:dev": "webpack --mode=development --config ./webpack.config.js",
     "build:prod-export": "webpack --mode=production --node-env=production --config ./webpack.config.js",
+    "build:vercel": "webpack --mode=production --node-env=production --config ./webpack.config.js",
     "watch": "webpack --watch",
     "serve": "webpack serve"
   },

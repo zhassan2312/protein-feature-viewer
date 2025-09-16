@@ -177,8 +177,8 @@ class FeatureViewer {
             .attr("width", this.commons.viewerOptions.margin.left)
             .attr("class", "flagBackground")
             .attr("height", "100%")
-            .attr("fill", this.commons.backgroundcolor)
-            .attr("fill-opacity", 0);
+            .attr("fill", this.commons.backgroundcolor);
+        
         this.updateYAxis();
 
     };
@@ -246,8 +246,7 @@ class FeatureViewer {
             })
             .style("fill", (d) => {
                     return d.flagColor ? d.flagColor : this.commons.viewerOptions.flagColor;
-            })
-            .style("fill-opacity", 0);
+            });
 
         // foreingObject for chevron
 
@@ -1172,10 +1171,15 @@ class FeatureViewer {
         this.fillSVG.updateXAxisTop(this.commons.YPosition);
         this.calculate.updateSVGHeight(this.commons.YPosition + 5);
 
+        
+        
+
         // update brush
         if (this.commons.viewerOptions.brushActive) {
             this.fillSVG.resizeBrush()
         }
+
+        d3.selectAll('.y-axis-line').raise();
 
     }
 

@@ -7,3 +7,4 @@ dist
 # Ignore .js files
 **/*.js.map
 src/*.js
+.vercel

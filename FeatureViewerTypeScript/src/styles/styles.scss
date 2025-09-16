@@ -31,6 +31,10 @@ foreignObject > body {
   height: 100%;
 }
 
+.y-axis-line{
+  z-index: 100;
+}
+
 // fv buttons
 .mybutton {
   -moz-border-radius: 10px;
