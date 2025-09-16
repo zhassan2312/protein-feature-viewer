@@ -15,9 +15,9 @@ const rawASABinary: string = lines[14]?.trim() || "";
 const rawASAScore: string = lines[15]?.trim() || "";
 
 const rsaBinary: number[] = rawRSABinary ? Array.from(rawRSABinary, Number) : [];
-const rsaScore: number[] = rawRSAScore.trim().split(',').map(val => parseFloat(val));
+const rsaScore: number[] = rawRSAScore ? rawRSAScore.trim().split(',').map(val => parseFloat(val)) : [];
 const asaBinary: number[] = rawASABinary ? Array.from(rawASABinary, Number) : [];
-const asaScore: number[] = rawASAScore.trim().split(',').map(val => parseFloat(val));
+const asaScore: number[] = rawASAScore ? rawASAScore.trim().split(',').map(val => parseFloat(val)) : [];
 
 
 // **RSA panel**

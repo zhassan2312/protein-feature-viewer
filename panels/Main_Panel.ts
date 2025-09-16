@@ -16,7 +16,7 @@ const rawVSLScore: string = lines[3]?.trim() || "";
 
 const disorderBinary: number[] = rawDisorderBinary ? Array.from(rawDisorderBinary, Number) : [];
 const vslBinary: number[] = rawVSLBinary ? Array.from(rawVSLBinary, Number) : [];
-const vslScore: number[] = rawVSLScore.trim().split(',').map(val => parseFloat(val));
+const vslScore: number[] = rawVSLScore ? rawVSLScore.trim().split(',').map(val => parseFloat(val)) : [];
 
 // **ASA Panel Data**
 const rawRSABinary: string = lines[32]?.trim() || "";
@@ -25,9 +25,9 @@ const rawASABinary: string = lines[14]?.trim() || "";
 const rawASAScore: string = lines[15]?.trim() || "";
 
 const rsaBinary: number[] = rawRSABinary ? Array.from(rawRSABinary, Number) : [];
-const rsaScore: number[] = rawRSAScore.trim().split(',').map(val => parseFloat(val));
+const rsaScore: number[] = rawRSAScore ? rawRSAScore.trim().split(',').map(val => parseFloat(val)) : [];
 const asaBinary: number[] = rawASABinary ? Array.from(rawASABinary, Number) : [];
-const asaScore: number[] = rawASAScore.trim().split(',').map(val => parseFloat(val));
+const asaScore: number[] = rawASAScore ? rawASAScore.trim().split(',').map(val => parseFloat(val)) : [];
 
 //--------------------------------------------------------------------------------------------------------
 
@@ -44,8 +44,8 @@ if (lines[5] != "NULL"){
     var rawHelixScore: string = lines[5]?.trim() || "";
     var rawStrandScore: string = lines[6]?.trim() || "";
 
-    var HelixScore: number[] = rawHelixScore.trim().split(',').map(val => parseFloat(val));
-    var StrandScore: number[] = rawStrandScore.trim().split(',').map(val => parseFloat(val));  
+    var HelixScore: number[] = rawHelixScore ? rawHelixScore.trim().split(',').map(val => parseFloat(val)) : [];
+    var StrandScore: number[] = rawStrandScore ? rawStrandScore.trim().split(',').map(val => parseFloat(val)) : [];  
 
 }else{
     //TODO: Check this functionality
@@ -55,7 +55,7 @@ if (lines[5] != "NULL"){
 
 //Plddt Scores in  case of AF results
 var rawCoilScore: string = lines[7]?.trim() || "";
-var CoilScore: number[] = rawCoilScore.trim().split(',').map(val => parseFloat(val));
+var CoilScore: number[] = rawCoilScore ? rawCoilScore.trim().split(',').map(val => parseFloat(val)) : [];
 
 
 let PsiPredScore  = [];
@@ -87,7 +87,7 @@ const rawmmseqBinary: string = lines[8]?.trim() || "";
 const rawmmseqScore: string = lines[9]?.trim() || "";
 
 const mmseqBinary: number[] = rawmmseqBinary ? Array.from(rawmmseqBinary, Number) : [];
-const mmseqScore: number[] = rawmmseqScore.trim().split(',').map(val => parseFloat(val));
+const mmseqScore: number[] = rawmmseqScore ? rawmmseqScore.trim().split(',').map(val => parseFloat(val)) : [];
 
 
 // **Protein Binding Data**
@@ -99,9 +99,9 @@ const scriberBinary: number[] = rawScriberBinary ? Array.from(rawScriberBinary, 
 const disoRDPbindBinary: number[] = rawDisoRDPbindBinary ? Array.from(rawDisoRDPbindBinary, Number) : [];
 const morfChibiBinary: number[] = rawMorfChibiBinary ? Array.from(rawMorfChibiBinary, Number) : [];
 
-const disoRDPbindScore: number[] = lines[25].trim().split(',').map(val => parseFloat(val));
-const scriberScore: number[] = lines[27].trim().split(',').map(val => parseFloat(val));
-const morfChibiScore: number[] = lines[29].trim().split(',').map(val => parseFloat(val));
+const disoRDPbindScore: number[] = lines[25] ? lines[25].trim().split(',').map(val => parseFloat(val)) : [];
+const scriberScore: number[] = lines[27] ? lines[27].trim().split(',').map(val => parseFloat(val)) : [];
+const morfChibiScore: number[] = lines[29] ? lines[29].trim().split(',').map(val => parseFloat(val)) : [];
 
 
 // **Linker Data**

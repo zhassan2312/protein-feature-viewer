@@ -17,9 +17,9 @@ const scriberBinary: number[] = rawScriberBinary ? Array.from(rawScriberBinary, 
 const disoRDPbindBinary: number[] = rawDisoRDPbindBinary ? Array.from(rawDisoRDPbindBinary, Number) : [];
 const morfChibiBinary: number[] = rawMorfChibiBinary ? Array.from(rawMorfChibiBinary, Number) : [];
 
-const disoRDPbindScore: number[] = lines[25].trim().split(',').map(val => parseFloat(val));
-const scriberScore: number[] = lines[27].trim().split(',').map(val => parseFloat(val));
-const morfChibiScore: number[] = lines[29].trim().split(',').map(val => parseFloat(val));
+const disoRDPbindScore: number[] = lines[25] ? lines[25].trim().split(',').map(val => parseFloat(val)) : [];
+const scriberScore: number[] = lines[27] ? lines[27].trim().split(',').map(val => parseFloat(val)) : [];
+const morfChibiScore: number[] = lines[29] ? lines[29].trim().split(',').map(val => parseFloat(val)) : [];
 
 // **Protein Panel**
 const disoRDPbindSegments: Segment[] = extractSegments(disoRDPbindBinary, 1, "#3d7afd");

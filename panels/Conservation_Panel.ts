@@ -13,7 +13,7 @@ const rawmmseqBinary: string = lines[8]?.trim() || "";
 const rawmmseqScore: string = lines[9]?.trim() || "";
 
 const mmseqBinary: number[] = rawmmseqBinary ? Array.from(rawmmseqBinary, Number) : [];
-const mmseqScore: number[] = rawmmseqScore.trim().split(',').map(val => parseFloat(val));
+const mmseqScore: number[] = rawmmseqScore ? rawmmseqScore.trim().split(',').map(val => parseFloat(val)) : [];
 
 
 // **Conservation Panel**

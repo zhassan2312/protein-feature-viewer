@@ -23,8 +23,8 @@ if (lines[5] != "NULL"){
     var rawHelixScore: string = lines[5]?.trim() || "";
     var rawStrandScore: string = lines[6]?.trim() || "";
 
-    var HelixScore: number[] = rawHelixScore.trim().split(',').map(val => parseFloat(val));
-    var StrandScore: number[] = rawStrandScore.trim().split(',').map(val => parseFloat(val));  
+    var HelixScore: number[] = rawHelixScore ? rawHelixScore.trim().split(',').map(val => parseFloat(val)) : [];
+    var StrandScore: number[] = rawStrandScore ? rawStrandScore.trim().split(',').map(val => parseFloat(val)) : [];  
 
 }else{
     //TODO: Check this functionality
@@ -34,7 +34,7 @@ if (lines[5] != "NULL"){
 
 //Plddt Scores in  case of AF results
 var rawCoilScore: string = lines[7]?.trim() || "";
-var CoilScore: number[] = rawCoilScore.trim().split(',').map(val => parseFloat(val));
+var CoilScore: number[] = rawCoilScore ? rawCoilScore.trim().split(',').map(val => parseFloat(val)) : [];
 
 
 let PsiPredScore  = [];

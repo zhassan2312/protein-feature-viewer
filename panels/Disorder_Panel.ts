@@ -15,7 +15,7 @@ const rawVSLScore: string = lines[3]?.trim() || "";
 
 const disorderBinary: number[] = rawDisorderBinary ? Array.from(rawDisorderBinary, Number) : [];
 const vslBinary: number[] = rawVSLBinary ? Array.from(rawVSLBinary, Number) : [];
-const vslScore: number[] = rawVSLScore.trim().split(',').map(val => parseFloat(val));
+const vslScore: number[] = rawVSLScore ? rawVSLScore.trim().split(',').map(val => parseFloat(val)) : [];
 
 // ** CALCULATING DATA **
 const nativeDisorderColor: Segment[] = extractSegments(disorderBinary, 1, "#2da02c"); // assigned color for data exists
